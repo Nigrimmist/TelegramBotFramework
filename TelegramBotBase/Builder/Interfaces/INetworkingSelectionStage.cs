@@ -46,4 +46,11 @@ public interface INetworkingSelectionStage
     /// <param name="throwPendingUpdates">Indicates if all pending Telegram.Bot.Types.Updates should be thrown out before start polling.</param>
     /// <returns></returns>
     IBotCommandsStage WithHttpClient(HttpClient client, bool throwPendingUpdates = false, int timeoutInSeconds = 60);
+
+    /// <summary>
+    ///     Uses no custom http client, falling back to default behavior.
+    /// </summary>
+    /// <param name="throwPendingUpdates">Indicates if all pending Telegram.Bot.Types.Updates should be thrown out before start polling.</param>
+    /// <returns></returns>
+    IBotCommandsStage WithoutHttpClient();
 }

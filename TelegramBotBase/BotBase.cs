@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Telegram.Bot;
 using Telegram.Bot.Types;
@@ -105,6 +106,11 @@ public sealed class BotBase
         DeviceSession.MaxNumberOfRetries = GetSetting(ESettings.MaxNumberOfRetries, 5);
 
         Client.StartReceiving();
+    }
+
+    public Task HandleUpdateAsync(Update update)
+    {
+        return Client.HandleUpdateAsync(null, update, CancellationToken.None);
     }
 
 
@@ -247,7 +253,8 @@ public sealed class BotBase
         {
             if (bs.Value != null)
             {
-                await Client.SetBotCommands(bs.Value, bs.Key);
+                var filteredCommands = bs.Value.Where(cmd => cmd.Command != "start").ToList();
+                await Client.SetBotCommands(filteredCommands, bs.Key);
             }
             else
             {

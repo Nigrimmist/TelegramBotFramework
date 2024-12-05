@@ -28,6 +28,8 @@ public class MessageClient
 
     public string ApiKey { get; }
 
+    private bool _useHttpClient = true;
+
     public ITelegramBotClient TelegramClient { get; set; }
 
 
@@ -41,9 +43,10 @@ public class MessageClient
     public bool ThrowPendingUpdates { get; set; }
 
 
-    public MessageClient(string apiKey)
+    public MessageClient(string apiKey, bool useHttpClient = true)
     {
         ApiKey = apiKey;
+        _useHttpClient = useHttpClient;
         TelegramClient = new TelegramBotClient(apiKey);
     }
 
@@ -104,8 +107,9 @@ public class MessageClient
         var receiverOptions = new ReceiverOptions();
 
         receiverOptions.ThrowPendingUpdates = ThrowPendingUpdates;
-
-        TelegramClient.StartReceiving(HandleUpdateAsync, HandleErrorAsync, receiverOptions, _cancellationTokenSource.Token);
+        if(_useHttpClient){
+            TelegramClient.StartReceiving(HandleUpdateAsync, HandleErrorAsync, receiverOptions, _cancellationTokenSource.Token);
+        }
     }
 
 
@@ -115,7 +119,7 @@ public class MessageClient
     }
 
 
-    private async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
+    public async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
     {
         await OnMessageLoop(new UpdateResult(update, null));
     }

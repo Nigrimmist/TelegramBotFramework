@@ -283,6 +283,14 @@ public class BotBaseBuilder : IAPIKeySelectionStage, IMessageLoopSelectionStage,
         return this;
     }
 
+    public IBotCommandsStage WithoutHttpClient()
+    {
+        //custom changes : useHttpClient: false (use manual Update object handling)
+        _client = new MessageClient(_apiKey, useHttpClient: false);
+        return this;
+    }
+    
+
     #endregion
 
 
