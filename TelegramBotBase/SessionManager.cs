@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text.Json;
 using System.Threading.Tasks;
 using TelegramBotBase.Args;
 using TelegramBotBase.Attributes;
@@ -147,7 +149,7 @@ public class SessionManager
             }
 
             //No default constructor, fallback
-            if (!(t.GetConstructor(new Type[] { })?.Invoke(new object[] { }) is FormBase form))
+             if (!(t.GetConstructor(new Type[] { })?.Invoke(new object[] { }) is FormBase form))
             {
                 if (!statemachine.FallbackStateForm.IsSubclassOf(typeof(FormBase)))
                 {
@@ -183,19 +185,53 @@ public class SessionManager
 
                     try
                     {
-                        if (f.PropertyType.IsEnum)
-                        {
-                            var ent = Enum.Parse(f.PropertyType, p.Value.ToString());
+                        Type fType = f.PropertyType;
+                        var val = JsonConvert.DeserializeObject(p.Value.ToString(), fType);
+                        f.SetValue(form, val);
 
-                            f.SetValue(form, ent);
+                        //if (f.PropertyType.IsEnum)
+                        //{
+                        //    var ent = Enum.Parse(f.PropertyType, p.Value.ToString());
 
-                            continue;
-                        }
+                        //    f.SetValue(form, ent);
 
+                        //    continue;
+                        //}
 
-                        f.SetValue(form, p.Value);
+                        ////Newtonsoft Int64/Int32 converter issue
+                        //if (f.PropertyType == typeof(int))
+                        //{
+                        //    if (int.TryParse(p.Value.ToString(), out var i))
+                        //    {
+                        //        f.SetValue(form, i);
+                        //    }
+
+                        //    //return;
+                        //} else
+
+                        ////Newtonsoft Double/Decimal converter issue
+                        //if ((f.PropertyType == typeof(decimal)) | (f.PropertyType == typeof(decimal?)))
+                        //{
+                        //    decimal d = 0;
+                        //    if (decimal.TryParse(p.Value.ToString(), out d))
+                        //    {
+                        //        f.SetValue(form, d);
+                        //    }
+                        //} else
+
+                        //if (p.Value is JsonElement jsonElement && jsonElement.ValueKind == JsonValueKind.Array)
+                        //{
+                        //    var values = jsonElement.EnumerateArray()
+                        //        .Select(x => Convert.ChangeType(x.GetRawText(), typeof(int)))
+                        //        .ToArray();
+
+                        //    var list = new List<int>(values.Cast<int>());
+                        //    f.SetValue(form, list);
+                        //}
+                        //else 
+                        //    f.SetValue(form, p.Value);
                     }
-                    catch (ArgumentException)
+                    catch (ArgumentException ex)
                     {
                         Conversion.CustomConversionChecks(form, p, f);
                     }
