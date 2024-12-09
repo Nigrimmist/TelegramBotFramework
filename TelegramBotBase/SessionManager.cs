@@ -183,8 +183,8 @@ public class SessionManager
                         continue;
                     }
 
-                    try
-                    {
+                    //try
+                    //{
                         Type fType = f.PropertyType;
                         var val = JsonConvert.DeserializeObject(p.Value.ToString(), fType);
                         f.SetValue(form, val);
@@ -207,7 +207,8 @@ public class SessionManager
                         //    }
 
                         //    //return;
-                        //} else
+                        //}
+                        //else
 
                         ////Newtonsoft Double/Decimal converter issue
                         //if ((f.PropertyType == typeof(decimal)) | (f.PropertyType == typeof(decimal?)))
@@ -217,27 +218,18 @@ public class SessionManager
                         //    {
                         //        f.SetValue(form, d);
                         //    }
-                        //} else
-
-                        //if (p.Value is JsonElement jsonElement && jsonElement.ValueKind == JsonValueKind.Array)
-                        //{
-                        //    var values = jsonElement.EnumerateArray()
-                        //        .Select(x => Convert.ChangeType(x.GetRawText(), typeof(int)))
-                        //        .ToArray();
-
-                        //    var list = new List<int>(values.Cast<int>());
-                        //    f.SetValue(form, list);
                         //}
-                        //else 
+                        //else
+                       
                         //    f.SetValue(form, p.Value);
-                    }
-                    catch (ArgumentException ex)
-                    {
-                        Conversion.CustomConversionChecks(form, p, f);
-                    }
-                    catch
-                    {
-                    }
+                    //}
+                    //catch (ArgumentException ex)
+                    //{
+                    //    Conversion.CustomConversionChecks(form, p, f);
+                    //}
+                    //catch
+                    //{
+                    //}
                 }
             }
 
