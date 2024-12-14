@@ -185,43 +185,51 @@ public class SessionManager
 
                     //try
                     //{
+                    try
+                    {
                         Type fType = f.PropertyType;
                         var val = JsonConvert.DeserializeObject(p.Value.ToString(), fType);
                         f.SetValue(form, val);
+                    }
+                    catch 
+                    {
+                        f.SetValue(form, p.Value);
+                    }
 
-                        //if (f.PropertyType.IsEnum)
-                        //{
-                        //    var ent = Enum.Parse(f.PropertyType, p.Value.ToString());
 
-                        //    f.SetValue(form, ent);
+                    //if (f.PropertyType.IsEnum)
+                    //{
+                    //    var ent = Enum.Parse(f.PropertyType, p.Value.ToString());
 
-                        //    continue;
-                        //}
+                    //    f.SetValue(form, ent);
 
-                        ////Newtonsoft Int64/Int32 converter issue
-                        //if (f.PropertyType == typeof(int))
-                        //{
-                        //    if (int.TryParse(p.Value.ToString(), out var i))
-                        //    {
-                        //        f.SetValue(form, i);
-                        //    }
+                    //    continue;
+                    //}
 
-                        //    //return;
-                        //}
-                        //else
+                    ////Newtonsoft Int64/Int32 converter issue
+                    //if (f.PropertyType == typeof(int))
+                    //{
+                    //    if (int.TryParse(p.Value.ToString(), out var i))
+                    //    {
+                    //        f.SetValue(form, i);
+                    //    }
 
-                        ////Newtonsoft Double/Decimal converter issue
-                        //if ((f.PropertyType == typeof(decimal)) | (f.PropertyType == typeof(decimal?)))
-                        //{
-                        //    decimal d = 0;
-                        //    if (decimal.TryParse(p.Value.ToString(), out d))
-                        //    {
-                        //        f.SetValue(form, d);
-                        //    }
-                        //}
-                        //else
-                       
-                        //    f.SetValue(form, p.Value);
+                    //    //return;
+                    //}
+                    //else
+
+                    ////Newtonsoft Double/Decimal converter issue
+                    //if ((f.PropertyType == typeof(decimal)) | (f.PropertyType == typeof(decimal?)))
+                    //{
+                    //    decimal d = 0;
+                    //    if (decimal.TryParse(p.Value.ToString(), out d))
+                    //    {
+                    //        f.SetValue(form, d);
+                    //    }
+                    //}
+                    //else
+
+                    //    f.SetValue(form, p.Value);
                     //}
                     //catch (ArgumentException ex)
                     //{

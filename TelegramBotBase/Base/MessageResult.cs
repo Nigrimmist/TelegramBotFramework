@@ -144,7 +144,14 @@ public class MessageResult : ResultBase
     /// <returns></returns>
     public async Task ConfirmAction(string message = "", bool showAlert = false, string urlToOpen = null)
     {
-        await Device.ConfirmAction(UpdateData.CallbackQuery.Id, message, showAlert, urlToOpen);
+        try
+        {
+            await Device.ConfirmAction(UpdateData.CallbackQuery.Id, message, showAlert, urlToOpen);
+        }
+        catch
+        {
+
+        }
     }
 
     public override async Task DeleteMessage()
