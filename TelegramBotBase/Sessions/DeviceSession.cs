@@ -219,7 +219,7 @@ public class DeviceSession : IDeviceSession
     /// <param name="disableNotification"></param>
     /// <returns></returns>
     public async Task<Message> Send(long deviceId, string text, ButtonForm buttons = null, int replyTo = 0,
-                                    bool disableNotification = false, ParseMode parseMode = ParseMode.Markdown,
+                                    bool disableNotification = false, ParseMode? parseMode = null,
                                     bool markdownV2AutoEscape = true)
     {
         if (ActiveForm == null)
@@ -260,7 +260,7 @@ public class DeviceSession : IDeviceSession
     /// <param name="disableNotification"></param>
     /// <returns></returns>
     public async Task<Message> Send(string text, ButtonForm buttons = null, int replyTo = 0,
-                                    bool disableNotification = false, ParseMode parseMode = ParseMode.Markdown,
+                                    bool disableNotification = false, ParseMode? parseMode = null,
                                     bool markdownV2AutoEscape = true)
     {
         return await Send(DeviceId, text, buttons, replyTo, disableNotification, parseMode, markdownV2AutoEscape);
