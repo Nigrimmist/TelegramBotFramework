@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using TelegramBotBase.Args;
 using TelegramBotBase.Attributes;
 using TelegramBotBase.Base;
+using TelegramBotBase.DependencyInjection;
 using TelegramBotBase.Form;
 using TelegramBotBase.Interfaces;
 using TelegramBotBase.Sessions;
@@ -166,7 +167,9 @@ public class SessionManager
                     continue;
                 }
             }
-
+            var baseForm = BotBase.StartFormFactory.CreateForm();
+            var serviceProvider = baseForm.GetServiceProvider();
+            form.SetServiceProvider(serviceProvider);
 
             if (s.Values != null && s.Values.Count > 0)
             {

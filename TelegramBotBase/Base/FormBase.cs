@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using TelegramBotBase.Args;
 using TelegramBotBase.Base;
+using TelegramBotBase.DependencyInjection;
 using TelegramBotBase.Form.Navigation;
 using TelegramBotBase.Sessions;
 using static TelegramBotBase.Base.Async;
@@ -32,7 +33,7 @@ public class FormBase : IDisposable
 
     public MessageClient Client { get; set; }
 
-    IServiceProvider _serviceProvider = null;
+    public IServiceProvider ServiceProvider { get; set; }
 
     /// <summary>
     ///     has this formular already been disposed ?
@@ -316,10 +317,11 @@ public class FormBase : IDisposable
 
         ds.PreviousForm = ds.ActiveForm;
 
+        var serviceProvider = ds.ActiveForm.GetServiceProvider();
         ds.ActiveForm = newForm;
         newForm.Client = Client;
         newForm.Device = ds;
-
+        newForm.SetServiceProvider(serviceProvider);
         //Notify prior to close
         foreach (var b in Controls)
         {
