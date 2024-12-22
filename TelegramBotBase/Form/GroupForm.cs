@@ -11,28 +11,27 @@ public class GroupForm : FormBase
     {
         switch (message.MessageType)
         {
-            case MessageType.ChatMembersAdded:
+            case MessageType.NewChatMembers:
 
-                await OnMemberChanges(new MemberChangeEventArgs(MessageType.ChatMembersAdded, message,
+                await OnMemberChanges(new MemberChangeEventArgs(MessageType.NewChatMembers, message,
                                                                 message.Message.NewChatMembers));
 
                 break;
-            case MessageType.ChatMemberLeft:
+            case MessageType.LeftChatMember:
 
-                await OnMemberChanges(new MemberChangeEventArgs(MessageType.ChatMemberLeft, message,
+                await OnMemberChanges(new MemberChangeEventArgs(MessageType.LeftChatMember, message,
                                                                 message.Message.LeftChatMember));
 
                 break;
 
-            case MessageType.ChatPhotoChanged:
-            case MessageType.ChatPhotoDeleted:
-            case MessageType.ChatTitleChanged:
-            case MessageType.MigratedFromGroup:
-            case MessageType.MigratedToSupergroup:
-            case MessageType.MessagePinned:
-            case MessageType.GroupCreated:
-            case MessageType.SupergroupCreated:
-            case MessageType.ChannelCreated:
+            case MessageType.Photo:
+            case MessageType.DeleteChatPhoto:
+            case MessageType.NewChatTitle:
+            case MessageType.MigrateFromChatId:
+            case MessageType.PinnedMessage:
+            case MessageType.GroupChatCreated:
+            case MessageType.SupergroupChatCreated:
+            case MessageType.ChannelChatCreated:
 
                 await OnGroupChanged(new GroupChangedEventArgs(message.MessageType, message));
 

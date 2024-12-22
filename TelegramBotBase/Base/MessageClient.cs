@@ -106,7 +106,7 @@ public class MessageClient
 
         var receiverOptions = new ReceiverOptions();
 
-        receiverOptions.ThrowPendingUpdates = ThrowPendingUpdates;
+        receiverOptions.DropPendingUpdates = ThrowPendingUpdates;
         if(_useHttpClient){
             TelegramClient.StartReceiving(HandleUpdateAsync, HandleErrorAsync, receiverOptions, _cancellationTokenSource.Token);
         }

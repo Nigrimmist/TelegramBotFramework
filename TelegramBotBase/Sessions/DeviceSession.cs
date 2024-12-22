@@ -219,7 +219,7 @@ public class DeviceSession : IDeviceSession
     /// <param name="disableNotification"></param>
     /// <returns></returns>
     public async Task<Message> Send(long deviceId, string text, ButtonForm buttons = null, int replyTo = 0,
-                                    bool disableNotification = false, ParseMode? parseMode = null,
+                                    bool disableNotification = false, ParseMode parseMode = ParseMode.None,
                                     bool markdownV2AutoEscape = true)
     {
         if (ActiveForm == null)
@@ -240,7 +240,7 @@ public class DeviceSession : IDeviceSession
         }
 
 
-        var t = Api(a => a.SendTextMessageAsync(deviceId, text, null, parseMode, replyToMessageId: replyTo,
+        var t = Api(a => a.SendTextMessageAsync(deviceId, text, null, parseMode, replyParameters: replyTo,
                                                 replyMarkup: markup, disableNotification: disableNotification));
 
         var o = GetOrigin(new StackTrace());
@@ -260,7 +260,7 @@ public class DeviceSession : IDeviceSession
     /// <param name="disableNotification"></param>
     /// <returns></returns>
     public async Task<Message> Send(string text, ButtonForm buttons = null, int replyTo = 0,
-                                    bool disableNotification = false, ParseMode? parseMode = null,
+                                    bool disableNotification = false, ParseMode parseMode = ParseMode.None,
                                     bool markdownV2AutoEscape = true)
     {
         return await Send(DeviceId, text, buttons, replyTo, disableNotification, parseMode, markdownV2AutoEscape);
@@ -294,7 +294,7 @@ public class DeviceSession : IDeviceSession
         }
 
 
-        var t = Api(a => a.SendTextMessageAsync(DeviceId, text, null, parseMode, replyToMessageId: replyTo,
+        var t = Api(a => a.SendTextMessageAsync(DeviceId, text, null, parseMode, replyParameters: replyTo,
                                                 replyMarkup: markup, disableNotification: disableNotification));
 
         var o = GetOrigin(new StackTrace());
@@ -312,7 +312,7 @@ public class DeviceSession : IDeviceSession
     /// <param name="replyTo"></param>
     /// <param name="disableNotification"></param>
     /// <returns></returns>
-    public async Task<Message> Send(string text, ReplyMarkupBase markup, int replyTo = 0,
+    public async Task<Message> Send(string text, IReplyMarkup markup, int replyTo = 0,
                                     bool disableNotification = false, ParseMode parseMode = ParseMode.Markdown,
                                     bool markdownV2AutoEscape = true)
     {
@@ -332,7 +332,7 @@ public class DeviceSession : IDeviceSession
         }
 
 
-        var t = Api(a => a.SendTextMessageAsync(DeviceId, text, null, parseMode, replyToMessageId: replyTo,
+        var t = Api(a => a.SendTextMessageAsync(DeviceId, text, null, parseMode, replyParameters: replyTo,
                                                 replyMarkup: markup, disableNotification: disableNotification));
 
         var o = GetOrigin(new StackTrace());
@@ -362,7 +362,7 @@ public class DeviceSession : IDeviceSession
         InlineKeyboardMarkup markup = buttons;
 
 
-        var t = Api(a => a.SendPhotoAsync(DeviceId, file, null, caption, parseMode, replyToMessageId: replyTo,
+        var t = Api(a => a.SendPhotoAsync(DeviceId, file, null, caption, parseMode, replyParameters: replyTo,
                                           replyMarkup: markup, disableNotification: disableNotification));
 
         var o = GetOrigin(new StackTrace());
@@ -393,7 +393,7 @@ public class DeviceSession : IDeviceSession
 
 
         var t = Api(a => a.SendVideoAsync(DeviceId, file, caption: caption, parseMode: parseMode,
-                                          replyToMessageId: replyTo, replyMarkup: markup,
+                                          replyParameters: replyTo, replyMarkup: markup,
                                           disableNotification: disableNotification));
 
         var o = GetOrigin(new StackTrace());
@@ -423,7 +423,7 @@ public class DeviceSession : IDeviceSession
 
 
         var t = Api(a => a.SendVideoAsync(DeviceId, InputFile.FromUri(url), parseMode: parseMode,
-                                          replyToMessageId: replyTo, replyMarkup: markup,
+                                          replyParameters: replyTo, replyMarkup: markup,
                                           disableNotification: disableNotification));
 
         var o = GetOrigin(new StackTrace());
@@ -457,7 +457,7 @@ public class DeviceSession : IDeviceSession
 
         var fts = InputFile.FromStream(ms, filename);
 
-        var t = Api(a => a.SendVideoAsync(DeviceId, fts, parseMode: parseMode, replyToMessageId: replyTo,
+        var t = Api(a => a.SendVideoAsync(DeviceId, fts, parseMode: parseMode, replyParameters: replyTo,
                                           replyMarkup: markup, disableNotification: disableNotification));
 
         var o = GetOrigin(new StackTrace());
@@ -494,7 +494,7 @@ public class DeviceSession : IDeviceSession
 
         var fts = InputFile.FromStream(fs, filename);
 
-        var t = Api(a => a.SendVideoAsync(DeviceId, fts, parseMode: parseMode, replyToMessageId: replyTo,
+        var t = Api(a => a.SendVideoAsync(DeviceId, fts, parseMode: parseMode, replyParameters: replyTo,
                                           replyMarkup: markup, disableNotification: disableNotification));
 
         var o = GetOrigin(new StackTrace());
@@ -574,7 +574,7 @@ public class DeviceSession : IDeviceSession
 
 
         var t = Api(a => a.SendDocumentAsync(DeviceId, document, null, null, caption, replyMarkup: markup,
-                                             disableNotification: disableNotification, replyToMessageId: replyTo));
+                                             disableNotification: disableNotification, replyParameters: replyTo));
 
         var o = GetOrigin(new StackTrace());
         await OnMessageSent(new MessageSentEventArgs(await t, o));
@@ -772,7 +772,7 @@ public class DeviceSession : IDeviceSession
 
     #region "Users"
 
-    public virtual async Task RestrictUser(long userId, ChatPermissions permissions, bool? useIndependentGroupPermission = null, DateTime until = default)
+    public virtual async Task RestrictUser(long userId, ChatPermissions permissions, bool useIndependentGroupPermission, DateTime until = default)
     {
         try
         {
