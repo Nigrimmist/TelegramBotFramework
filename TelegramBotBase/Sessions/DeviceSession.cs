@@ -220,7 +220,7 @@ public class DeviceSession : IDeviceSession
     /// <returns></returns>
     public async Task<Message> Send(long deviceId, string text, ButtonForm buttons = null, int replyTo = 0,
                                     bool disableNotification = false, ParseMode parseMode = ParseMode.None,
-                                    bool markdownV2AutoEscape = true)
+                                    bool markdownV2AutoEscape = true, bool toNotDelete = false)
     {
         if (ActiveForm == null)
         {
@@ -245,7 +245,8 @@ public class DeviceSession : IDeviceSession
 
         var o = GetOrigin(new StackTrace());
 
-        await OnMessageSent(new MessageSentEventArgs(await t, o));
+        if(!toNotDelete)
+            await OnMessageSent(new MessageSentEventArgs(await t, o));
 
         return await t;
 
@@ -261,9 +262,9 @@ public class DeviceSession : IDeviceSession
     /// <returns></returns>
     public async Task<Message> Send(string text, ButtonForm buttons = null, int replyTo = 0,
                                     bool disableNotification = false, ParseMode parseMode = ParseMode.None,
-                                    bool markdownV2AutoEscape = true)
+                                    bool markdownV2AutoEscape = true, bool toNotDelete = false)
     {
-        return await Send(DeviceId, text, buttons, replyTo, disableNotification, parseMode, markdownV2AutoEscape);
+        return await Send(DeviceId, text, buttons, replyTo, disableNotification, parseMode, markdownV2AutoEscape, toNotDelete);
     }
 
     /// <summary>

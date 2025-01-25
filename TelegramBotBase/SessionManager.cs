@@ -170,6 +170,8 @@ public class SessionManager
             var baseForm = BotBase.StartFormFactory.CreateForm();
             var serviceProvider = baseForm.GetServiceProvider();
             form.SetServiceProvider(serviceProvider);
+            
+
 
             if (s.Values != null && s.Values.Count > 0)
             {

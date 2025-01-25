@@ -132,10 +132,10 @@ public class AutoCleanForm : FormBase
 
     private Task AutoCleanForm_Closed(object sender, EventArgs e)
     {
-        if (DeleteMode != EDeleteMode.OnLeavingForm)
-        {
-            return Task.CompletedTask;
-        }
+        //if (DeleteMode != EDeleteMode.OnLeavingForm)
+        //{
+        //    return Task.CompletedTask;
+        //}
 
         MessageCleanup().Wait();
         return Task.CompletedTask;
