@@ -343,6 +343,7 @@ public sealed class BotBase
     private static readonly object EvMessage = new();
 
     public delegate Task BotCommandEventHandler(object sender, BotCommandEventArgs e);
+    public delegate Task BotCallbackEventHandler(string callbackData, BotCommandEventArgs e);
 
     private static readonly object EvException = new();
 
@@ -384,6 +385,7 @@ public sealed class BotBase
     ///     Will be called if a bot command gets raised
     /// </summary>
     public event BotCommandEventHandler BotCommand;
+    public event BotCallbackEventHandler BotCallback;
 
 
     public async Task OnBotCommand(BotCommandEventArgs e)
@@ -391,6 +393,14 @@ public sealed class BotBase
         if (BotCommand != null)
         {
             await BotCommand(this, e);
+        }
+    }
+
+    public async Task OnBotCallback(string callbackData, BotCommandEventArgs e)
+    {
+        if (BotCallback != null)
+        {
+            await BotCallback(callbackData, e);
         }
     }
 

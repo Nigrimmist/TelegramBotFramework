@@ -76,7 +76,7 @@ public class MessageResult : ResultBase
     /// <summary>
     ///     Is this an action ? (i.e. button click)
     /// </summary>
-    public bool IsAction { get; private set; }
+    public bool IsAction { get; set; }
 
     /// <summary>
     ///     Is this a command ? Starts with a slash '/' and a command
@@ -146,6 +146,7 @@ public class MessageResult : ResultBase
     {
         try
         {
+
             await Device.ConfirmAction(UpdateData.CallbackQuery.Id, message, showAlert, urlToOpen);
         }
         catch

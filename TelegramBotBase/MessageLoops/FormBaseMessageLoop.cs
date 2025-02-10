@@ -46,6 +46,24 @@ public class FormBaseMessageLoop : IMessageLoopFactory
         mr.Device = session;
         ur.Device = session;
 
+
+        if (mr.IsFirstHandler && update.Type == UpdateType.CallbackQuery)
+        {
+            var sce = new BotCommandEventArgs(mr.BotCommand, mr.BotCommandParameters, mr.Message, session.DeviceId,
+                                              session);
+            await bot.OnBotCallback(update.CallbackQuery.Data, sce);
+
+            if (sce.Handled)
+            {
+                mr.IsAction = false;
+                mr.ConfirmAction();
+                return;
+            }
+        }
+        
+
+        
+
         var activeForm = session.ActiveForm;
 
         //Pre Loading Event
